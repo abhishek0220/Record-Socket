@@ -4,21 +4,16 @@ import json
 import logging
 import uvicorn
 import os
+from dotenv import load_dotenv
+from pymongo import MongoClient
+load_dotenv()
+uri = os.getenv('MONGODB')
+mongodb = MongoClient(uri)
+db = mongodb['record']
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 app = Starlette()
-
-db = {
-    '2018UCS0087': {
-        'name' : 'Abhishek',
-        'email' : 'abhishek0220@outlook.com'
-    },
-    '2018UCS0083': {
-        'name' : 'Deepansh',
-        'email' : 'deepansh.lodhi@random.email'
-    }
-}
 
 async def receive_json(websocket):
     message = await websocket.receive_text()
@@ -35,13 +30,14 @@ def sendMsg(msg, typ):
 def query(msg):
     arr = msg.split()
     if(arr[0] == "FETCH"):
-        if(arr[2] not in db):
+        person = db.details.find_one({'entry' : arr[2]})
+        if(person == None):
             return "Doesn`t exist"
         if(arr[1] == "EMAIL"):
-            return db[arr[2]]['email']
+            return person['email']
         elif(arr[1] == 'NAME'):
-            return db[arr[2]]['name']
-    return "Doesn`t exist"
+            return person['name']
+    return "Invalid Query"
 
 @app.websocket_route('/socket')
 async def websocket_endpoint(websocket):
@@ -58,7 +54,7 @@ async def websocket_endpoint(websocket):
     while (True):
         try:
             message = await receive_json(websocket)
-            quer = message['query'].upper()
+            quer = message['query']
             await websocket.send_text(sendMsg(quer, True))
             msg = query(quer)
             await websocket.send_text(sendMsg(msg, False))
