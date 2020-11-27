@@ -41,7 +41,7 @@ def query(msg, isauth):
         elif(arr[1] == 'NAME'):
             return person['name']
     # format is like "ADD name id email"
-    elif(arr[0] == "ADD" and len(arr) == 4):
+    elif(arr[0] == "ADD" and len(arr) == 4 and isauth):
         person = db.details.find_one({'entry' : arr[2].upper()})
 
         if(person != None):
@@ -60,7 +60,7 @@ def query(msg, isauth):
                 return "Some error occured while adding user."
 
     # format is like "UPDATE ID KEYWORD VALUE"
-    elif(arr[0] == "UPDATE" and len(arr) == 4):
+    elif(arr[0] == "UPDATE" and len(arr) == 4 and isauth):
         person = db.details.find_one({'entry' : arr[1].upper()})
         if(person == None):
             return "user Doesn`t exist"
@@ -89,7 +89,7 @@ def query(msg, isauth):
             return "Invalid Query"
 
     # format of delete is like "DELETE ID"
-    elif(arr[0] == "DELETE" and len(arr) == 2):
+    elif(arr[0] == "DELETE" and len(arr) == 2 and isauth):
         _entry = arr[1]
         person = db.details.find_one({'entry' : arr[1].upper()})
         if(person == None):
