@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -8,65 +9,83 @@ import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 })
 export class AppComponent {
   messages: any[];
+  toAuth= false;
+  userGot = "";
   con_color = "red";
-  connection$: WebSocketSubject<any>;
+  conActive = false;
   RETRY_SECONDS = 10; 
   myWebSocket: WebSocketSubject<any>;
+  userName = new FormControl();
+  password = new FormControl();
 
   constructor() {
+    this.userName.setValue("");
+    this.password.setValue("");
+    
     this.messages = [
       {
-        text: "sample 1",
-        date: new Date(),
-        reply: true,
-        type: 'text',
-        user: {
-          name: 'Jonh Doe',
-          avatar: 'https://i.gifer.com/no.gif',
-        },
-      },
-      {
-        text: "sample 1",
+        text: "Hi, I`m a Query application built using Websockets. Pls Connect to server",
         date: new Date(),
         reply: false,
         type: 'text',
         user: {
-          name: 'Jonh Doe',
+          name: 'Server',
           avatar: 'https://i.gifer.com/no.gif',
         },
       }
     ];
   }
-  connectToServer(){
+  async connectToServer(){
     console.log("connecting")
-    this.myWebSocket = webSocket('ws://localhost:5000/socket')
+    this.myWebSocket = await this.connectionStart();
     this.myWebSocket.subscribe(    
-      msg => {
+      async(msg) => {
         if(msg['event'] == 'auth') this.authEvent(msg);
         else if(msg['event'] == 'msg'){
           this.pushMsg(msg['msg'], msg['type']);
         }
-      },
-      // Called whenever there is a message from the server    
+      },   
       err => {
-        this.authEvent({status:'NotOK'})
-      }, 
-      // Called if WebSocket API signals some kind of error    
-      () => console.log('complete') 
-      // Called when connection is closed (for whatever reason)  
+        this.closeConnection();
+      },     
+      () => console.log("terminated"),
     );
-    this.myWebSocket.next({username: 'some message', password:'passcode'});
+    this.myWebSocket.next({auth : this.toAuth ,username: this.userName.value, password:this.password.value});
+  }
+  async connectionStart(){
+    if(this.conActive){
+      this.closeConnection();
+    }
+    return webSocket('ws://localhost:5000/socket');
   }
   authEvent(msg : object){
     console.log("auth")
     if(msg['status'] == 'ok'){
+      this.password.setValue("");
+      this.conActive = true;
       this.con_color = 'green';
       console.log("Connected");
+      if(msg['message'] == 201){
+        this.userGot = msg['user'];
+        this.getMessage(msg['log']);
+      }
+      else this.userGot = "Guest";
     }
     else{
-      this.con_color = 'red';
-      console.log("Disconnected");
+      this.closeConnection();
     }
+  }
+  getMessage(arr){
+    this.messages = []
+    for(var i in arr){
+      this.pushMsg(arr[i]['msg'], arr[i]['type'])
+    }
+  }
+  async closeConnection(){
+    this.conActive = false;
+    this.myWebSocket.complete();
+    this.con_color = 'red';
+    console.log("Disconnected");
   }
   sendMessage(event: any) {
     var msg : string = event.message;

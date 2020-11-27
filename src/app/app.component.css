@@ -5,6 +5,9 @@
   nb-chat {
     width: 500px;
   }
+  nb-accordion{
+    width: 500px;
+  }
   .example-spacer {
     flex: 1 1 auto;
   }

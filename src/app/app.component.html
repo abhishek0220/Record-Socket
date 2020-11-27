@@ -6,9 +6,15 @@
           <nb-accordion-item-header>
            Connection
            <div style="margin-left: 10px; height: 15px; width: 15px; background-color: {{con_color}}; border-radius: 50%;"></div>
+            {{userGot}}
           </nb-accordion-item-header>
          <nb-accordion-item-body>
-           <button nbButton (click)="connectToServer()" >Connect</button>
+           <button style="float: right;" nbButton (click)="connectToServer()" >Connect</button>
+           <nb-toggle status="basic" [(checked)]="toAuth">Authorize</nb-toggle>
+           <div style="margin-top:20px;" *ngIf="toAuth">
+            <input type="text" nbInput [formControl]="userName" status="primary" placeholder="Username"><br><br>
+            <input type="password" nbInput [formControl]="password" status="primary" placeholder="Password">
+           </div>
          </nb-accordion-item-body>
         </nb-accordion-item>
        </nb-accordion>
@@ -21,7 +27,7 @@
                              [quote]="msg.quote"
                              [avatar]="msg.user.avatar">
         </nb-chat-message>
-        <nb-chat-form (send)="sendMessage($event)" [dropFiles]="true">
+        <nb-chat-form (send)="sendMessage($event)" *ngIf="conActive">
         </nb-chat-form>
       </nb-chat>
     </div>
