@@ -40,6 +40,67 @@ def query(msg, isauth):
             return person['email']
         elif(arr[1] == 'NAME'):
             return person['name']
+    # format is like "ADD name id email"
+    elif(arr[0] == "ADD" and len(arr) == 4):
+        person = db.details.find_one({'entry' : arr[2].upper()})
+
+        if(person != None):
+            return "User Already Exists"
+        else:
+            _name = arr[1]
+            _id = arr[2].upper()
+            if ("@" in arr[3]):
+                _email = arr[3]
+            else:
+                return "Email Adress is wrong!"
+            try:
+                db.details.insert_one({"entry" :_id, "email" :_email, "name" :_name})
+                return "User added Successfully."
+            except:
+                return "Some error occured while adding user."
+
+    # format is like "UPDATE ID KEYWORD VALUE"
+    elif(arr[0] == "UPDATE" and len(arr) == 4):
+        person = db.details.find_one({'entry' : arr[1].upper()})
+        if(person == None):
+            return "user Doesn`t exist"
+        if(arr[2] == "EMAIL"):
+            query = {'entry' : arr[1].upper()}
+            if ("@" in arr[3]):
+                _email = arr[3]
+            else:
+                return "Email Adress is wrong!"
+            query_update = { "$set": {"email": _email} }
+            try:
+                db.details.update_one(query, query_update)
+                return "Information updated successfully!"
+            except :
+                return "Some error occured while updating..."
+        elif(arr[2] == "NAME"):
+            query = {'entry' : arr[1].upper()}
+            _name = arr[3]
+            query_update = { "$set": {"name": _name} }
+            try:
+                db.saman.update_one(query, query_update)
+                return "Information updated successfully!"
+            except :
+                return "Some error occured while updating..."
+        else:
+            return "Invalid Query"
+
+    # format of delete is like "DELETE ID"
+    elif(arr[0] == "DELETE" and len(arr) == 2):
+        _entry = arr[1]
+        person = db.details.find_one({'entry' : arr[1].upper()})
+        if(person == None):
+            return "Doesn`t exist"
+        query = {"entry" : arr[1].upper()}
+        try:
+            db.details.delete_one(query)
+            return "User Deleted from database."
+        except :
+            return "Some error occured while Deleting User..."
+
     return "Invalid Query"
 
 @app.websocket_route('/socket')
@@ -60,8 +121,8 @@ async def websocket_endpoint(websocket):
         user = db.users.find_one({'username':username})
         if(user and user['password'] == password):
             authenticated = True
-            resp['status'] = 'ok' 
-            resp['user'] = username   
+            resp['status'] = 'ok'
+            resp['user'] = username
             resp['log'] = user.get('log',[])
     await websocket.send_text(json.dumps(resp))
     logger.info(f'Client connected')
