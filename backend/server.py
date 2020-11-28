@@ -81,7 +81,7 @@ def query(msg, isauth):
             _name = arr[3]
             query_update = { "$set": {"name": _name} }
             try:
-                db.saman.update_one(query, query_update)
+                db.details.update_one(query, query_update)
                 return "Information updated successfully!"
             except :
                 return "Some error occured while updating..."
