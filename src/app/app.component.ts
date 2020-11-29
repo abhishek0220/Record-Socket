@@ -56,7 +56,7 @@ export class AppComponent {
     if(this.conActive){
       this.closeConnection();
     }
-    return webSocket('ws://localhost:5000/socket');
+    return webSocket('ws://13.80.25.152:5000/socket');
   }
   authEvent(msg : object){
     console.log("auth")
