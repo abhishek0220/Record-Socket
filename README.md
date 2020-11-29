@@ -38,6 +38,7 @@ MONGODB = <mongodb_uri>
 ### FETCH 
 - Autorization is not Required.
 - To get email or name corresponding to Entry Number
+
 Commands Are
 1. `FETCH EMAIL <ENTRY_NO>` 
 2. `FETCH NAME <ENTRY_NO>` 
@@ -45,12 +46,14 @@ Commands Are
 ### ADD 
 - Autorization is Required.
 - To add a new entry to the database
+
 Commands Are
 1. `ADD <NAME> <ENTRY_NO> <EMAIL>` 
 
 ### UPDATE 
 - Autorization is Required.
 - To update existing information in the database
+
 Commands Are
 1. `UPDATE <ENTRY_NO> NAME <NEW_NAME>` 
 2. `UPDATE <ENTRY_NO> EMAIL <NEW_EMAIL>` 
@@ -58,5 +61,6 @@ Commands Are
 ### DELETE 
 - Autorization is Required.
 - To delete record from database.
+
 Commands Are
 1. `DELETE <ENTRY_NO>` 
