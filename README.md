@@ -25,7 +25,7 @@ MONGODB = <mongodb_uri>
 9. Run `npm install`.
 10. Run `ng serve`.
 
-##Features
+## Features
 - Authorization: Only those who are authorized can make changes in the database
 - Log Management: User can see their previous log.
 - FETCH: to obtain details of a entry. Authorization is not required.Command is `FETCH Email ID` for email and `FETCH Name ID` for name.
