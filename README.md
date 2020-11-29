@@ -8,27 +8,55 @@ A web application to add and fetch details of students.
 - Python 3.7
 - Angular CLI 10
 - Database : MongoDB
+- Backend Hosted on Heroku
+- Frontend Hosted on Github Pages
     
 ## Instructions to Run locally 
-1. Install [Python](https://www.python.org/downloads/) and [Angular](https://angular.io/)
+1. Install [Python](https://www.python.org/downloads/) and [Angular](https://angular.io/guide/setup-local)
 2. Clone this repository and open terminal, change directory to backend folder in the repo. 
 3. Run `python -m venv ./venv` to create virtual environment.
 4. Run `venv\Scripts\activate` command to activate virtual environment.
 5. Run `pip install -r requirements.txt` command to install dependencies.
 6. Create a **.env** file in the backend folder, containing
-
 ```
 MONGODB = <mongodb_uri>
 ```
-7. Run `python server.py`(this will run backend server).
+7. Run `uvicorn server:app --port 5000`(this will run backend server).
 8. Open new terminal and change directory to repo.
-9. Run `npm install`.
-10. Run `ng serve`.
+9. Change connection 
+10. Run `npm install`.
+11. Run `ng serve -o`.
 
 ## Features
 - Authorization: Only those who are authorized can make changes in the database
 - Log Management: User can see their previous log.
-- FETCH: to obtain details of a entry. Authorization is not required.Command is `FETCH Email ID` for email and `FETCH Name ID` for name.
-- ADD: to add new entry. Authorization is required. Command is `ADD name id email`. **NOTE:** name should be without space in between.
-- UPDATE: to update existing information. Authorization is required. Command is `UPDATE ID KEYWORD VALUE`.
-- DELETE: to delete entry from database. Authorization is required. Command: `DELETE ID`.
+- FETCH: to obtain details of a entry.
+- ADD: to add a new entry to the database.
+- UPDATE: to update existing information.
+- DELETE: to delete entry from database.
+
+### FETCH 
+- Autorization is not Required.
+- To get email or name corresponding to Entry Number
+Commands Are
+1. `FETCH EMAIL <ENTRY_NO>` 
+2. `FETCH NAME <ENTRY_NO>` 
+
+### ADD 
+- Autorization is Required.
+- To add a new entry to the database
+Commands Are
+1. `ADD <NAME> <ENTRY_NO> <EMAIL>` 
+
+### UPDATE 
+- Autorization is Required.
+- To update existing information in the database
+Commands Are
+1. `UPDATE <ENTRY_NO> NAME <NEW_NAME>` 
+2. `UPDATE <ENTRY_NO> EMAIL <NEW_EMAIL>` 
+
+### DELETE 
+- Autorization is Required.
+- To delete record from database.
+Commands Are
+1. `DELETE <ENTRY_NO>` 
