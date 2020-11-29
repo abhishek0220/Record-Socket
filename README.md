@@ -1,27 +1,27 @@
 # RecordSocket
+A web application to add and fetch details of students.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.6.
+[![Python 3.7](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/release/python-370/)
 
-## Development server
+## Technology stack
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+- Python 3.7
+- Angular CLI 10
+- Database : MongoDB
+    
+## Instructions to Run locally 
+1. Install [Python](https://www.python.org/downloads/) and [Angular](https://angular.io/)
+2. Clone this repository and open terminal, change directory to backend folder in the repo. 
+3. Run `python -m venv ./venv` to create virtual environment.
+4. Run `venv\Scripts\activate` command to activate virtual environment.
+5. Run `pip install -r requirements.txt` command to install dependencies.
+6. Create a **.env** file in the backend folder, containing
 
-## Code scaffolding
+```
+MONGODB = <mongodb_uri>
+```
+7. Run python server.py(this will run backend server).
+8. Open new terminal and change directory to repo.
+9. Run `npm install`.
+10. Run `ng serve`.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
