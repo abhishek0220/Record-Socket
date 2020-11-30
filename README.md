@@ -23,7 +23,7 @@ MONGODB = <mongodb_uri>
 ```
 7. Run `uvicorn server:app --port 5000`(this will run backend server).
 8. Open new terminal and change directory to repo.
-9. Change connection 
+9. Open file `src/app/app.component.ts` and change the address in line number 59 to your localhost address.
 10. Run `npm install`.
 11. Run `ng serve -o`.
 
