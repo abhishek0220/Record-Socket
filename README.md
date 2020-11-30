@@ -1,7 +1,7 @@
 # RecordSocket
 A web application to add and fetch details of students. 
 
-Live on [iamabhishek.live/Record-Socket/](iamabhishek.live/Record-Socket/)
+Live on [iamabhishek.live/Record-Socket/](https://iamabhishek.live/Record-Socket/)
 
 <br>
 
